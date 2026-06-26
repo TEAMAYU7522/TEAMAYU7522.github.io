@@ -1,50 +1,703 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TEAMAYU7522</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HS Forum Dashboard</title>
+
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #000000, #003b3b, #00a6a6);
-      font-family: Arial, sans-serif;
-      color: white;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    :root {
+      --red: #9b0d0d;
+      --red-dark: #570707;
+      --red-soft: #b71919;
+      --gold: #ffd21f;
+      --white: #ffffff;
+      --dark: #1e1e1e;
+      --gray: #f2f4f7;
+      --line: #dddddd;
+    }
+
+    body {
+      background: #f4f4f4;
+      color: #111827;
+    }
+
+    .layout {
       display: flex;
-      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: linear-gradient(180deg, #a30f0f, #5b0505, #180101);
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      padding: 18px 10px;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.35);
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
       align-items: center;
-      text-align: center;
-    }
-
-    .box {
-      padding: 40px;
-      border-radius: 20px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 2px solid #00ffef;
-      box-shadow: 0 0 30px #00ffef;
-      max-width: 700px;
-      width: 90%;
-    }
-
-    h1 {
-      color: #00ffef;
-      font-size: 42px;
-      text-shadow: 0 0 15px #00ffef;
-    }
-
-    p {
+      gap: 10px;
+      margin-bottom: 28px;
+      padding-left: 12px;
+      color: var(--gold);
       font-size: 20px;
+      font-weight: bold;
+      font-style: italic;
+      letter-spacing: 1px;
+    }
+
+    .brand .logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px rgba(255, 210, 31, 0.6);
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.08);
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 15px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 0 15px rgba(255,255,255,0.04);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.2s;
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      background: linear-gradient(135deg, #c51b1b, #8a1010);
+      transform: translateX(4px);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.35);
+    }
+
+    .menu-title {
+      color: #ffdada;
+      font-size: 13px;
+      margin: 20px 14px 8px;
+      text-transform: uppercase;
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      min-height: 100vh;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      height: 76px;
+      background: linear-gradient(90deg, #b20f0f, #8b0808, #520303);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: white;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hamburger {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 12px;
+      color: white;
+      background: rgba(255,255,255,0.18);
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .clock {
+      background: rgba(255,255,255,0.16);
+      padding: 12px 18px;
+      border-radius: 25px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: inset 0 0 10px rgba(255,255,255,0.12);
+    }
+
+    .info {
+      background: rgba(255,255,255,0.18);
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .bonus {
+      background: #400202;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 8px 16px;
+      border-radius: 25px;
+      color: var(--gold);
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user {
+      background: rgba(255,255,255,0.18);
+      padding: 10px 16px;
+      border-radius: 22px;
+      font-weight: bold;
+    }
+
+    /* CONTENT */
+    .content {
+      padding: 24px 28px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .breadcrumb {
+      float: right;
+      color: #2563eb;
+      font-size: 14px;
+      margin-top: -40px;
+    }
+
+    .hello {
+      background: white;
+      padding: 18px;
+      border: 1px solid var(--line);
+      margin-bottom: 26px;
+      font-size: 16px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 18px;
+    }
+
+    .tab {
+      padding: 12px 18px;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      background: white;
+      font-size: 14px;
+      color: #2563eb;
+    }
+
+    /* CARD DASHBOARD */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      min-height: 105px;
+      border-radius: 5px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 3px 9px rgba(0,0,0,0.20);
+    }
+
+    .card .number {
+      font-size: 34px;
+      font-weight: bold;
+      padding: 15px 10px 0;
+    }
+
+    .card .label {
+      padding: 6px 10px;
+      font-size: 14px;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .card .icon {
+      position: absolute;
+      right: 14px;
+      top: 18px;
+      font-size: 54px;
+      opacity: 0.18;
+    }
+
+    .card .more {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 6px;
+      background: rgba(0,0,0,0.15);
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .white { background: #f7f7f7; color: #111827; }
+    .pink { background: #e914b8; }
+    .purple { background: #6612ea; }
+    .orange { background: #ff7a0a; color: #151515; }
+    .gray { background: #6f7a83; }
+    .cyan { background: #1ca2b2; }
+    .green { background: #25a942; }
+    .yellow { background: #ffc107; color: #1f2937; }
+    .red { background: #dc3545; }
+    .black { background: #303840; }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 25px 0 32px;
+    }
+
+    /* ABSENSI */
+    .absensi {
+      background: linear-gradient(180deg, #bd0808, #710808);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      color: white;
+    }
+
+    .absensi-header {
+      background: linear-gradient(90deg, #c60808, #2d0000);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .absensi-header h2 {
+      color: var(--gold);
+      font-size: 30px;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .absensi-header p {
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    select {
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: rgba(255,255,255,0.08);
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.16);
+      margin-bottom: 20px;
+    }
+
+    .legend span {
+      background: white;
+      color: #111;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+
+    .hadir { background: white; border: 1px solid #ddd; }
+    .telat { background: #ffca28; }
+    .sakit { background: #0d6efd; }
+    .izin { background: #17a2b8; }
+    .alpha { background: #dc3545; }
+    .cuti { background: #28a745; }
+
+    .table-wrap {
+      overflow-x: auto;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1050px;
+      color: #111;
+    }
+
+    th {
+      background: linear-gradient(180deg, #a91414, #720808);
+      color: white;
+      padding: 12px 8px;
+      border: 1px solid #8b1010;
+      font-size: 13px;
+    }
+
+    td {
+      padding: 12px 8px;
+      text-align: center;
+      border: 1px solid #ddd;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .month {
+      width: 160px;
+      background: #fff;
+      color: #111;
+    }
+
+    .status-h {
+      color: #111;
+      background: #ffffff;
+    }
+
+    .status-t {
+      background: #ffe082;
+    }
+
+    .status-s {
+      background: #bbdefb;
+    }
+
+    .footer-note {
+      margin-top: 15px;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 1200px) {
+      .cards {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .layout {
+        flex-direction: column;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .topbar {
+        height: auto;
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px;
+      }
+
+      .top-left,
+      .top-right {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .breadcrumb {
+        float: none;
+        margin: 0 0 15px;
+      }
+
+      .absensi-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
-<body>
 
-  <div class="box">
-    <h1>WEBSITE TEAMAYU7522</h1>
-    <p>Website GitHub Pages berhasil dibuat.</p>
-    <p>Selamat datang di website pertama saya.</p>
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">H</div>
+        <span>HS Forum</span>
+      </div>
+
+      <nav class="menu">
+        <a class="active" href="#">🏠 HS Forum</a>
+        <a href="#">🏠 HS Forum (Data Lama)</a>
+        <a href="#">🏠 HS Forum (OP)</a>
+        <a href="#">🪪 HRD Management</a>
+        <a href="#">🎯 KPI Management</a>
+
+        <div class="menu-title">Dokumentasi</div>
+        <a href="#">📒 Panduan</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+
+      <header class="topbar">
+        <div class="top-left">
+          <button class="hamburger">☰</button>
+          <div class="clock" id="clock">26-06-2026 20:38:47</div>
+          <div class="info">INFO &nbsp; Selamat Bergabung Di HS Forum!!!</div>
+        </div>
+
+        <div class="top-right">
+          <div class="bonus">📈 BONUS 96.5%</div>
+          <div class="user">vkiaaop1 👤</div>
+        </div>
+      </header>
+
+      <section class="content">
+        <h1 class="page-title">HS Forum</h1>
+        <div class="breadcrumb">Beranda / <span style="color:#777;">HS Forum</span></div>
+
+        <div class="hello">
+          Hello, <b>vkiaaop1</b> / <b>MUHAMMAD IRFAN</b>
+        </div>
+
+        <div class="tabs">
+          <div class="tab">💬 HS Forum</div>
+          <div class="tab">📈 KPI</div>
+        </div>
+
+        <div class="cards">
+          <div class="card white">
+            <div class="number">0</div>
+            <div class="label">Open Case</div>
+            <div class="icon">◔</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+
+          <div class="card pink">
+            <div class="number">0</div>
+            <div class="label">On Progress Case</div>
+            <div class="icon">💬</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+
+          <div class="card purple">
+            <div class="number">3</div>
+            <div class="label">On Progress Cases Tidak Bersalah</div>
+            <div class="icon">☯</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+
+          <div class="card orange">
+            <div class="number">3</div>
+            <div class="label">On Progress Cases Kesalahan</div>
+            <div class="icon">🟠</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+
+          <div class="card gray">
+            <div class="number">0</div>
+            <div class="label">Pending Case</div>
+            <div class="icon">?</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+
+          <div class="card cyan">
+            <div class="number">0</div>
+            <div class="label">Closed Case Tidak Bersalah</div>
+            <div class="icon">☯</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+
+          <div class="card green">
+            <div class="number">0</div>
+            <div class="label">Closed Case Kesalahan Low</div>
+            <div class="icon">−</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+
+          <div class="card yellow">
+            <div class="number">0</div>
+            <div class="label">Closed Case Kesalahan Medium</div>
+            <div class="icon">−</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+
+          <div class="card red">
+            <div class="number">0</div>
+            <div class="label">Closed Case Kesalahan High</div>
+            <div class="icon">−</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+
+          <div class="card black">
+            <div class="number">0</div>
+            <div class="label">Mistake Case</div>
+            <div class="icon">!</div>
+            <div class="more">Info Lebih... ➜</div>
+          </div>
+        </div>
+
+        <hr />
+
+        <section class="absensi">
+          <div class="absensi-header">
+            <div>
+              <h2>ABSENSI</h2>
+              <p>Data kehadiran tahun 2026</p>
+            </div>
+
+            <select>
+              <option>📅 JUNE 2026</option>
+              <option>JULY 2026</option>
+              <option>AUGUST 2026</option>
+            </select>
+          </div>
+
+          <div class="legend">
+            <span><i class="dot hadir"></i>Hadir</span>
+            <span><i class="dot telat"></i>Telat</span>
+            <span><i class="dot sakit"></i>Sakit</span>
+            <span><i class="dot izin"></i>Izin</span>
+            <span><i class="dot alpha"></i>Tanpa Kabar</span>
+            <span><i class="dot cuti"></i>Cuti</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr id="tanggal-row">
+                  <th>BULAN/TGL</th>
+                </tr>
+                <tr id="hari-row">
+                  <th>JUNE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="status-row">
+                  <td class="month">JUNE</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="footer-note">
+            Tampilan ini masih statis. Untuk data otomatis, nanti perlu koneksi database atau sistem admin.
+          </div>
+        </section>
+      </section>
+    </main>
   </div>
 
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const d = String(now.getDate()).padStart(2, '0');
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const y = now.getFullYear();
+      const h = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById("clock").textContent = `${d}-${m}-${y} ${h}:${min}:${s}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    const tanggalRow = document.getElementById("tanggal-row");
+    const hariRow = document.getElementById("hari-row");
+    const statusRow = document.getElementById("status-row");
+
+    const hari = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
+
+    for (let i = 1; i <= 30; i++) {
+      const thTanggal = document.createElement("th");
+      thTanggal.textContent = String(i).padStart(2, "0");
+      tanggalRow.appendChild(thTanggal);
+
+      const thHari = document.createElement("th");
+      thHari.textContent = hari[(i - 1) % 7];
+      hariRow.appendChild(thHari);
+
+      const td = document.createElement("td");
+      td.textContent = "H";
+      td.className = "status-h";
+
+      if (i === 8 || i === 19) {
+        td.textContent = "T";
+        td.className = "status-t";
+      }
+
+      if (i === 14) {
+        td.textContent = "S";
+        td.className = "status-s";
+      }
+
+      statusRow.appendChild(td);
+    }
+  </script>
 </body>
 </html>
